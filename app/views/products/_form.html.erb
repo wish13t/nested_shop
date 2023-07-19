@@ -1,0 +1,60 @@
+<%= form_with(model: product) do |form| %>
+  <% if product.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(product.errors.count, "error") %> prohibited this product from being saved:</h2>
+
+      <ul>
+        <% product.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :title, style: "display: block" %>
+    <%= form.text_field :title %>
+  </div>
+
+  <div>
+    <%= form.label :description, style: "display: block" %>
+    <%= form.text_field :description %>
+  </div>
+
+  <div>
+    <%= form.fields_for :product_variants do |f| %>
+      <%= render 'product_variant_fields', f: f %>
+    <% end %>
+    <%#= link_to_add_fields "Add variants", form, :product_variants %>
+
+    <%= link_to_add_fields "Add variants", form, :product_variants, id: "product_variants_#{product.id}" %>
+    <%#= link_to_add_fields "Add variants", form, :product_variants, data: { id: "product_variants_#{product.id}"} %>
+
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    $(document).on('click', '.remove-fields', function(event) {
+      console.log('clicked remove');
+      var variantDiv = $(this).closest('.product-variant');
+      variantDiv.find('input[type=hidden]').val('1');
+      variantDiv.hide();
+      return event.preventDefault();
+    });
+
+    $(document).on('click', '.add_fields', function(event) {
+      console.log('clicked add');
+      var time = new Date().getTime();
+      var regexp = new RegExp($(this).data('id'), 'g');
+      var newFields = $(this).data('fields').replace(regexp, time);
+      $(this).before(newFields);
+      return event.preventDefault();
+    });
+  });
+</script>
+

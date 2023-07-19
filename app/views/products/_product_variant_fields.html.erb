@@ -1,0 +1,16 @@
+<div class="product-variant">
+<div>
+  <%= f.label :color, style: "display: block" %>
+  <%= f.text_field :color %>
+</div>
+
+<div>
+  <%= f.label :size, style: "display: block" %>
+  <%= f.text_field :size %>
+</div>
+
+<div>
+  <%= f.hidden_field :destroy %>
+  <%= link_to "Remove", "#", class: "remove-fields", data: { variant_id: f.object.id } %>
+</div>
+</div>
